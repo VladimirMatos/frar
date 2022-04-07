@@ -13,7 +13,7 @@ const getUsuarios = async (req: Request, res: Response) => {
         message: "There are not users",
       });
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Retorna los usuarios",
       message: "Returns the users",
       user,
@@ -61,7 +61,7 @@ const createUsuarios = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Usuario creado",
       user,
     });
@@ -104,7 +104,7 @@ const updateUsuarios = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       message: "Usuario actualizado",
     });
   } catch (error) {
@@ -127,7 +127,7 @@ const getUsuariosById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Usuario obtenido",
       users,
     });
@@ -151,7 +151,7 @@ const deleteUsuario = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Usuario eliminado",
       users,
     });
@@ -176,7 +176,7 @@ const getCliente = async (req: Request, res: Response) => {
         mensaje: "No hay cliente",
       });
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Retorna los cliente",
       user,
     });
@@ -220,7 +220,7 @@ const createClientes = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Cliente creado",
       user,
     });
@@ -265,7 +265,7 @@ const updateCliente = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       message: "Cliente actualizado",
       user,
     });
@@ -289,7 +289,7 @@ const deleteCliente = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Cliente eliminado",
       users,
     });
@@ -313,7 +313,7 @@ const getClientesById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Usuario obtenido",
       users,
     });

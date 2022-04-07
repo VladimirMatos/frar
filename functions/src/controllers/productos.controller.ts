@@ -11,7 +11,7 @@ const getProductos = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Productos obtenidos",
       productos,
     });
@@ -41,7 +41,7 @@ const createProductos = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Producto creado",
       productos,
     });
@@ -72,7 +72,7 @@ const updateProductos = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Producto actualizado",
       productos,
     });
@@ -96,7 +96,7 @@ const getProductosById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Producto obtenido",
       producto,
     });
@@ -120,7 +120,7 @@ const deleteProducto = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Producto eliminado",
       producto,
     });
@@ -146,7 +146,7 @@ const getProductosBycategoria = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Productos obtenidos",
       producto,
     });

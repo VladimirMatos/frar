@@ -11,7 +11,7 @@ const getAlmacenamiento = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Almacenamientos",
       almacenamiento,
     });
@@ -35,7 +35,7 @@ const createAlmacenamiento = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Almacenamiento creado",
       almacenamiento,
     });
@@ -59,7 +59,7 @@ const getAlmacenamientoById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Almacenamiento",
       almacenamiento,
     });
@@ -86,7 +86,7 @@ const updateAlmacenamiento = async (req: Request, res: Response) => {
     if (!almacenamiento.length) {
       return res.status(204).send();
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Almacenamiento actualizado",
       almacenamiento,
     });
@@ -110,7 +110,7 @@ const deleteAlmacenamiento = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Almacenamiento eliminado",
       almacenamiento,
     });

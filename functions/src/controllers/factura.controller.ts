@@ -20,7 +20,7 @@ const getFacturas = async (req: Request, res: Response) => {
     if (!factura.length) {
       return res.status(204).send();
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Retorna las facturas",
       factura,
     });
@@ -98,6 +98,8 @@ const createFactura = async (req: Request, res: Response) => {
         cantidad.push(inventario.cantidad);
         libras.push(inventario.libras);
         producto.push(inventario.Inventario.Productos.nombre);
+
+        return inventario;
       })
     );
 
@@ -118,7 +120,7 @@ const createFactura = async (req: Request, res: Response) => {
     await Cart.destroy({
       where: { cliente_id },
     });
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Retorna las facturas",
       factura,
     });
@@ -147,7 +149,7 @@ const getFacturaById = async (req: Request, res: Response) => {
     if (!factura) {
       return res.status(204).send();
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Retorna las facturas",
       factura,
     });
@@ -168,7 +170,7 @@ const deleteFactura = async (req: Request, res: Response) => {
     if (!factura) {
       return res.status(204).send();
     }
-    res.status(200).send({
+   return res.status(200).send({
       mensaje: "Facturas eliminada",
       factura,
     });

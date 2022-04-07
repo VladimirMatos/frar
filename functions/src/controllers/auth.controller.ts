@@ -40,7 +40,7 @@ const login = async (req: Request, res: Response) => {
             }
         
         
-        res.status(200).send({
+      return  res.status(200).send({
             message: "Welcome",
             mensaje: "Bienvenido",
             user

@@ -15,7 +15,7 @@ const getClientes = async (req: Request, res: Response) => {
                 message: "There are not users"
             })
         }
-        res.status(200).send({
+      return  res.status(200).send({
             mensaje: "Retorna los usuarios",
             message: "Returns the users",
             user
@@ -57,7 +57,7 @@ const createCliente = async (req: Request, res: Response) =>{
             return res.status(204).send()
         }
 
-        res.status(200).send({
+      return  res.status(200).send({
             mensaje:'Usuario creado',
             user
         })
@@ -104,7 +104,7 @@ const updateCliente = async  (req: Request, res: Response) =>{
             return res.status(204).send()
         }
 
-        res.status(200).send({
+      return  res.status(200).send({
             message:'Usuario actualizado'
         })
     } catch (error) {
@@ -127,7 +127,7 @@ const getClienteById =async (req: Request, res: Response) => {
             return res.status(204).send()
         }
 
-        res.status(200).send({
+      return  res.status(200).send({
             mensaje:'Cliente obtenido',
             users
         })
@@ -151,7 +151,7 @@ const deleteCliente = async (req: Request, res: Response) =>{
             return res.status(204).send()
         }
 
-        res.status(200).send({
+      return  res.status(200).send({
             mensaje:'Usuario eliminado',
             users
         })

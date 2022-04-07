@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Sequelize, col } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { Cart } from '../models/cart';
 import { Inventario } from '../models/inventario';
 
@@ -29,7 +29,7 @@ const getCart = async (req: Request, res: Response) => {
         if (!cartdetail.length) {
             return res.sendStatus(204)
         }
-        res.status(200).send({
+      return  res.status(200).send({
             message: "Detalle de carrito",
             cartdetail
         })

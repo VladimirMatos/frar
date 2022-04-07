@@ -1,6 +1,4 @@
 import { Request, Response } from 'express';
-import bcrypt from 'bcrypt';
-import { Usuario } from '../models/usuario';
 import { Role } from '../models/role';
 import { Categoria } from '../models/categoria';
 import { Estados } from '../models/estados';
@@ -50,7 +48,7 @@ const inicializar = async (req: Request, res: Response) =>{
      return res.status(204).send();
    }
    
-   res.status(200).send({
+  return res.status(200).send({
        mesanje:'Todo creado'
    })
 
