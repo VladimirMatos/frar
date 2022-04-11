@@ -1,17 +1,17 @@
 const {
-    dbHost,
-    dbUser,
-    dbPass,
-    dbName,
-    dbPort
+    DBHOST,
+    DBUSER,
+    DBPASS,
+    DBNAME,
+    DBPORT
  } = process.env
 
 export const config = {
     db:{
-        host: dbHost,
-        user: dbUser,
-        password: dbPass,
-        database: dbName,
-        port: dbPort
+        host: DBHOST,
+        user: DBUSER,
+        password: DBPASS,
+        database: DBNAME,
+        port: DBPORT
     }
 }
