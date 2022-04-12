@@ -45,7 +45,7 @@ const getInventario = async (req: Request, res: Response) => {
       return res.status(200).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Inventario obtenido",
       invetario,
     });
@@ -85,7 +85,7 @@ const createInvetario = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Inventario creado",
       inventario,
     });
@@ -112,7 +112,7 @@ const getInventarioById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Inventario obtenido",
       inventario,
     });
@@ -152,7 +152,7 @@ const updateInventario = async (req: Request, res: Response) => {
       return res.status(200).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Inventario actualizado",
       inventario,
     });
@@ -176,7 +176,7 @@ const eliminarInventario = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mesanje: "Inventario eliminado",
       inventario,
     });

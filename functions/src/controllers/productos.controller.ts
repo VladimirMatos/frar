@@ -1,20 +1,30 @@
 import { Request, Response } from "express";
+import { Op } from "sequelize";
 import { Productos } from "../models/productos";
 
 const getProductos = async (req: Request, res: Response) => {
   try {
-    const productos = await Productos.findAll({
-      order: [["updatedAt", "DESC"]],
-    });
-
-    if (!productos.length) {
+    const {initial_date, final_date} = req.body;
+    let productos
+    if(initial_date && final_date){
+      productos = await Productos.count({
+        where: {
+          createdAt: {
+            [Op.between]: [initial_date, final_date]
+          }
+        }
+      });
+    }else{
+      productos = await Productos.count();
+    }
+    if (!productos) {
       return res.status(204).send();
     }
-
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Productos obtenidos",
       productos,
     });
+    
   } catch (error) {
     res.status(400).send({
       mensaje: "Ha ocurrido un error",
@@ -41,7 +51,7 @@ const createProductos = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Producto creado",
       productos,
     });
@@ -72,7 +82,7 @@ const updateProductos = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Producto actualizado",
       productos,
     });
@@ -96,7 +106,7 @@ const getProductosById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Producto obtenido",
       producto,
     });
@@ -120,7 +130,7 @@ const deleteProducto = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Producto eliminado",
       producto,
     });
@@ -146,7 +156,7 @@ const getProductosBycategoria = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Productos obtenidos",
       producto,
     });

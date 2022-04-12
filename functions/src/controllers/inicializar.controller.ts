@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import { Role } from '../models/role';
 import { Categoria } from '../models/categoria';
 import { Estados } from '../models/estados';
@@ -48,7 +49,7 @@ const inicializar = async (req: Request, res: Response) =>{
      return res.status(204).send();
    }
    
-  return res.status(200).send({
+   return res.status(200).send({
        mesanje:'Todo creado'
    })
 

@@ -11,7 +11,7 @@ const getProvedor = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Provedores obtenidos",
       provedor,
     });
@@ -35,7 +35,7 @@ const getProvedorById = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Provedor obtenido",
       provedor,
     });
@@ -65,7 +65,7 @@ const createProvedor = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Provedor creado",
       provedor,
     });
@@ -96,7 +96,7 @@ const updateProvedor = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Provedor actualizado",
       provedor,
     });
@@ -120,7 +120,7 @@ const deleteProvedor = async (req: Request, res: Response) => {
       return res.status(204).send();
     }
 
-   return res.status(200).send({
+    return res.status(200).send({
       mensaje: "Provedor eliminado",
       provedor,
     });

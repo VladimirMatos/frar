@@ -29,7 +29,7 @@ const getCart = async (req: Request, res: Response) => {
         if (!cartdetail.length) {
             return res.sendStatus(204)
         }
-      return  res.status(200).send({
+        return  res.status(200).send({
             message: "Detalle de carrito",
             cartdetail
         })
