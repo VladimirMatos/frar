@@ -38,6 +38,8 @@ const createCliente = async (req: Request, res: Response) =>{
             apellido,
             telefono,
             email,
+            nombre_empresa,
+            descripcion,
             direccion_detalle,
             num_identificacion
         } = req.body
@@ -45,6 +47,8 @@ const createCliente = async (req: Request, res: Response) =>{
             nombre,
             apellido,
             telefono,
+            nombre_empresa,
+            descripcion,
             email,
             direccion_detalle,
             num_identificacion,
