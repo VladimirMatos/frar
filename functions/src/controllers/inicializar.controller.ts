@@ -24,23 +24,23 @@ const inicializar = async (req: Request, res: Response) =>{
     await Productos.create({nombre:'Chuleta Fresca',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Chuleta Ahumada',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Costillita Ahumada',categoria_id:1,estado_id:1})
-    await Productos.create({nombre:'Pollo Ahumado',categoria_id:1,estado_id:1})
+    await Productos.create({nombre:'Pollo Ahumado',categoria_id:2,estado_id:1})
     await Productos.create({nombre:'Masita Ahumada',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Longaniza',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Lomo',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Paletas',categoria_id:1,estado_id:1})
-    await Productos.create({nombre:'Cuello',categoria_id:1,estado_id:1})
+    await Productos.create({nombre:'Cuello',categoria_id:2,estado_id:1})
     await Productos.create({nombre:'Costillitas',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Cabeza',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Papada',categoria_id:1,estado_id:1})
-    await Productos.create({nombre:'Patica',categoria_id:1,estado_id:1})
+    await Productos.create({nombre:'Patica',categoria_id:2,estado_id:1})
     await Productos.create({nombre:'Barrigada',categoria_id:1,estado_id:1})
     await Productos.create({nombre:'Capa',categoria_id:1,estado_id:1})
-    await Productos.create({nombre:'Otros',categoria_id:1,estado_id:1})
+    await Productos.create({nombre:'Otros',categoria_id:2,estado_id:1})
      const params = {
-       nombre:"Administrador test 4",
-       telefono:"804-004-0004",
-       direccion_detalle:"Test direccion 4"
+       nombre:"Administrador test ",
+       telefono:"800-000-0000",
+       direccion_detalle:"Test direccion "
      };
 
      const user = await Provedor.create(params);

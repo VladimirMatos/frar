@@ -10,8 +10,12 @@ const router: Router = Router()
  import provedorRouter from "./routes/provedor"
  import almacenamientoRouter from "./routes/almacenamiento"
  import facturaRouter from './routes/facturas';
+import cartRouter from './routes/cart';
+import categoriaRouter from './routes/categoria';
 
 // Routes
+router.use('/categoria', categoriaRouter)
+router.use('/cart',cartRouter)
 router.use('/factura',facturaRouter)
 router.use('/almacen',almacenamientoRouter)
 router.use('/provedor',provedorRouter)

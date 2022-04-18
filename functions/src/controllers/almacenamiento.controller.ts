@@ -27,9 +27,9 @@ const getAlmacenamiento = async (req: Request, res: Response) => {
 };
 const createAlmacenamiento = async (req: Request, res: Response) => {
   try {
-    const { nombre } = req.body;
+    
 
-    const almacenamiento = await Almacenamiento.create({ nombre });
+    const almacenamiento = await Almacenamiento.create(req.body);
 
     if (!almacenamiento) {
       return res.status(204).send();
@@ -76,16 +76,17 @@ const getAlmacenamientoById = async (req: Request, res: Response) => {
 const updateAlmacenamiento = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { nombre } = req.body;
 
-    const almacenamiento = await Almacenamiento.update(
-      { nombre },
+    const almacenamiento = await Almacenamiento.findOne(
       { where: { id } }
     );
 
-    if (!almacenamiento.length) {
+    if (!almacenamiento) {
       return res.status(204).send();
     }
+
+    await almacenamiento.update(req.body);
+
     return res.status(200).send({
       mensaje: "Almacenamiento actualizado",
       almacenamiento,
@@ -104,11 +105,13 @@ const deleteAlmacenamiento = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const almacenamiento = await Almacenamiento.destroy({ where: { id } });
+    const almacenamiento = await Almacenamiento.findOne({ where: { id } });
 
     if (!almacenamiento) {
       return res.status(204).send();
     }
+
+    await almacenamiento.destroy();
 
    return res.status(200).send({
       mensaje: "Almacenamiento eliminado",

@@ -2,17 +2,22 @@ import { Request, Response } from "express";
 import { Sequelize } from "sequelize";
 import { Cart } from "../models/cart";
 import { Factura } from "../models/factura";
+import { FacturaDetalle } from "../models/factura-detalle";
 import { Inventario } from "../models/inventario";
 import { Productos } from "../models/productos";
 import { Usuario } from "../models/usuario";
 
 const getFacturas = async (req: Request, res: Response) => {
   try {
-    const factura = await Factura.findAll({
+    const factura = await FacturaDetalle.findAll({
       include: [
         {
           model: Usuario,
           as: "Cliente",
+        },
+        {
+          model: Factura,
+          as: "Factura",
         },
       ],
       order: [["updatedAt", "DESC"]],
@@ -53,10 +58,6 @@ const createFactura = async (req: Request, res: Response) => {
     });
 
     let total = 0;
-    let precio_libras: any = [];
-    let cantidad: any = [];
-    let libras: any = [];
-    let producto: any = [];
     await Promise.all(
       inventario.map(async (inventario: any) => {
         const checkStock2 = inventario.Inventario.stock < inventario.cantidad;
@@ -94,35 +95,45 @@ const createFactura = async (req: Request, res: Response) => {
           inventario.Inventario.precio_libra * inventario.libras;
         total = total + sub_total;
 
-        precio_libras.push(inventario.Inventario.precio_libra);
-        cantidad.push(inventario.cantidad);
-        libras.push(inventario.libras);
-        producto.push(inventario.Inventario.Productos.nombre);
+        
 
-        return inventario;
+        const facturaDetalle = await FacturaDetalle.create({
+          libras: inventario.libras,
+          precio_libras: inventario.Inventario.precio_libra,
+          cantidad: inventario.cantidad,
+          producto:inventario.Inventario.Productos.nombre,
+          cliente_id: cliente_id,
+        });
+
+        return facturaDetalle;
       })
     );
 
+    const factura = await Factura.create({ total, condiciones });
 
-    const params = {
-      cliente_id,
+    await FacturaDetalle.update(
+      { factura_id: factura.id },
+      { where: { cliente_id } }
+    );
+
+    
+    const detalle = await FacturaDetalle.findAll({ where: { cliente_id }, include: [{ model: Usuario, as: "Cliente" }] });
+
+    const FacturaDetallada = {
+      detalle,
+      total: factura.total,
       condiciones,
-      total,
-      precio_libras,
-      cantidad,
-      libras,
-      producto,
     };
-    const factura = await Factura.create(params);
-    if (!factura) {
+
+    if (!FacturaDetallada) {
       return res.status(204).send();
     }
     await Cart.destroy({
       where: { cliente_id },
     });
     return res.status(200).send({
-      mensaje: "Retorna las facturas",
-      factura,
+      mensaje: "Factura creada",
+      FacturaDetallada,
     });
   } catch (error) {
     res.status(400).send({
@@ -137,12 +148,16 @@ const createFactura = async (req: Request, res: Response) => {
 const getFacturaById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const factura = await Factura.findOne({
+    const factura = await FacturaDetalle.findOne({
       where: { id },
       include: [
         {
           model: Usuario,
           as: "Cliente",
+        },
+        {
+          model: Factura,
+          as: "Factura",
         },
       ],
     });

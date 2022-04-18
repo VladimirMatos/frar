@@ -5,6 +5,7 @@ import { Estados } from "../models/estados";
 import { Inventario } from "../models/inventario";
 import { Productos } from "../models/productos";
 import { Provedor } from "../models/provedor";
+import { Op } from 'sequelize';
 
 const invetarioInclude = [
   {
@@ -36,11 +37,28 @@ const invetarioInclude = [
 
 const getInventario = async (req: Request, res: Response) => {
   try {
+    const { id } = req.params;
+
+    const producto = await Productos.findAll({
+      where: {
+        estado_id: 1,
+        categoria_id: id
+      }
+    });
+
+    const producto_id = producto.map((producto) => producto.id);
+
+
     const invetario = await Inventario.findAll({
+      where: {
+        producto_id:{
+          [Op.in]: producto_id
+        }
+      },
       include: invetarioInclude,
       order: [["updatedAt", "DESC"]],
     });
-
+    
     if (!invetario.length) {
       return res.status(200).send();
     }
@@ -61,25 +79,8 @@ const getInventario = async (req: Request, res: Response) => {
 };
 const createInvetario = async (req: Request, res: Response) => {
   try {
-    const {
-      producto_id,
-      stock,
-      precio,
-      provedor_id,
-      almacenamiento_id,
-      fecha,
-    } = req.body;
 
-    const params = {
-      producto_id,
-      stock,
-      precio,
-      provedor_id,
-      almacenamiento_id,
-      fecha,
-    };
-
-    const inventario = await Inventario.create(params);
+    const inventario = await Inventario.create(req.body);
 
     if (!inventario) {
       return res.status(204).send();
@@ -129,28 +130,13 @@ const getInventarioById = async (req: Request, res: Response) => {
 const updateInventario = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {
-      producto_id,
-      stock,
-      precio,
-      provedor_id,
-      almacenamiento_id,
-      fecha,
-    } = req.body;
-    const params = {
-      producto_id,
-      stock,
-      precio,
-      provedor_id,
-      almacenamiento_id,
-      fecha,
-    };
+    const inventario = await Inventario.findOne({ where: { id } });
 
-    const inventario = await Inventario.update(params, { where: { id } });
-
-    if (!inventario.length) {
+    if (!inventario) {
       return res.status(200).send();
     }
+
+    await inventario.update(req.body);
 
     return res.status(200).send({
       mensaje: "Inventario actualizado",
@@ -170,11 +156,11 @@ const eliminarInventario = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const inventario = await Inventario.destroy({ where: { id } });
-
+    const inventario = await Inventario.findOne({ where: { id } });
     if (!inventario) {
       return res.status(204).send();
     }
+    await inventario.destroy();
 
     return res.status(200).send({
       mesanje: "Inventario eliminado",

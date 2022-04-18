@@ -78,34 +78,18 @@ const createUsuarios = async (req: Request, res: Response) => {
 const updateUsuarios = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const {
-      nombre,
-      apellido,
-      fecha_nacimiento,
-      telefono,
-      email,
-      direccion_detalle,
-      num_identificacion,
-    } = req.body;
 
-    const params = {
-      nombre,
-      apellido,
-      fecha_nacimiento,
-      telefono,
-      email,
-      direccion_detalle,
-      num_identificacion,
-    };
+    const user = await Usuario.findOne({ where: { id } });
 
-    const user = await Usuario.update(params, { where: { id } });
-
-    if (!user.length) {
+    if (!user) {
       return res.status(204).send();
     }
 
+    await user.update(req.body);
+
     return res.status(200).send({
       message: "Usuario actualizado",
+      user,
     });
   } catch (error) {
     res.status(400).send({
@@ -145,12 +129,14 @@ const deleteUsuario = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const users = await Usuario.destroy({ where: { id } });
+    const users = await Usuario.findOne({ where: { id } });
 
     if (!users) {
       return res.status(204).send();
     }
 
+    await users.destroy();
+    
     return res.status(200).send({
       mensaje: "Usuario eliminado",
       users,

@@ -1,22 +1,24 @@
 import { Request, Response } from "express";
-import { Op } from "sequelize";
+import { Categoria } from "../models/categoria";
+import { Estados } from "../models/estados";
 import { Productos } from "../models/productos";
 
 const getProductos = async (req: Request, res: Response) => {
   try {
-    const {initial_date, final_date} = req.body;
-    let productos
-    if(initial_date && final_date){
-      productos = await Productos.count({
-        where: {
-          createdAt: {
-            [Op.between]: [initial_date, final_date]
-          }
-        }
+    
+      const productos = await Productos.findAll({
+        order: [["updatedAt", "DESC"]],
+        include: [
+          {
+            model: Categoria,
+            as: "Categoria",
+          },
+          {
+            model: Estados,
+            as: "Estados",
+          } ] 
       });
-    }else{
-      productos = await Productos.count();
-    }
+  
     if (!productos) {
       return res.status(204).send();
     }
@@ -37,15 +39,8 @@ const getProductos = async (req: Request, res: Response) => {
 };
 const createProductos = async (req: Request, res: Response) => {
   try {
-    const { nombre, categoria_id, estado_id } = req.body;
 
-    const params = {
-      nombre,
-      categoria_id,
-      estado_id,
-    };
-
-    const productos = await Productos.create(params);
+    const productos = await Productos.create(req.body);
 
     if (!productos) {
       return res.status(204).send();
@@ -68,23 +63,16 @@ const createProductos = async (req: Request, res: Response) => {
 const updateProductos = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { nombre, subcategoria_id, estado_id } = req.body;
+    const producto = await Productos.findOne({ where: { id } });
 
-    const params = {
-      nombre,
-      subcategoria_id,
-      estado_id,
-    };
-
-    const productos = await Productos.update(params, { where: { id } });
-
-    if (!productos.length) {
+    if (!producto) {
       return res.status(204).send();
     }
+    await producto.update(req.body);
 
     return res.status(200).send({
       mensaje: "Producto actualizado",
-      productos,
+      producto,
     });
   } catch (error) {
     res.status(400).send({
@@ -124,11 +112,13 @@ const deleteProducto = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const producto = await Productos.destroy({ where: { id } });
+    const producto = await Productos.findOne({ where: { id } }); 
 
     if (!producto) {
       return res.status(204).send();
     }
+
+    await producto.destroy();
 
     return res.status(200).send({
       mensaje: "Producto eliminado",

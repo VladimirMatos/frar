@@ -5,6 +5,9 @@ import { Usuario } from '../models/usuario';
 const getClientes = async (req: Request, res: Response) => {
     try {
         const user = await Usuario.findAll({
+            where: {
+                role_id: 2
+            },
             order:[
                 ['updated_at','DESC']
             ]
@@ -33,29 +36,8 @@ const getClientes = async (req: Request, res: Response) => {
 }
 const createCliente = async (req: Request, res: Response) =>{
     try {
-        const {
-            nombre,
-            apellido,
-            telefono,
-            email,
-            nombre_empresa,
-            descripcion,
-            direccion_detalle,
-            num_identificacion
-        } = req.body
-        const params = {
-            nombre,
-            apellido,
-            telefono,
-            nombre_empresa,
-            descripcion,
-            email,
-            direccion_detalle,
-            num_identificacion,
-            role_id: 2
-        }
 
-        const user = await Usuario.create(params);
+        const user = await Usuario.create({...req.body,role_id:2});
 
         if (!user) {
             return res.status(204).send()
@@ -78,38 +60,18 @@ const createCliente = async (req: Request, res: Response) =>{
 const updateCliente = async  (req: Request, res: Response) =>{
     try {
         const {id} = req.params
-        const {
-            nombre,
-            apellido,
-            nombre_empresa,
-            fecha_nacimiento,
-            telefono,
-            email,
-            direccion_detalle,
-            num_identificacion,
-            descripcion
-        } = req.body
 
-        const params = {
-            nombre,
-            apellido,
-            nombre_empresa,
-            fecha_nacimiento,
-            telefono,
-            email,
-            direccion_detalle,
-            num_identificacion,
-            descripcion
-        }
+        const user = await Usuario.findOne({where:{id}})
 
-        const user = await Usuario.update(params,{where:{id}})
-
-        if(!user.length){
+        if(!user){
             return res.status(204).send()
         }
 
+       await user.update(req.body)
+
         return  res.status(200).send({
-            message:'Usuario actualizado'
+            message:'Usuario actualizado',
+            user
         })
     } catch (error) {
         res.status(400).send({
@@ -149,11 +111,13 @@ const deleteCliente = async (req: Request, res: Response) =>{
     try {
         const {id} = req.params
 
-        const users = await Usuario.destroy({where:{id}})
+        const users = await Usuario.findOne({where:{id}})
 
         if(!users){
             return res.status(204).send()
         }
+
+        await users.destroy()
 
         return  res.status(200).send({
             mensaje:'Usuario eliminado',

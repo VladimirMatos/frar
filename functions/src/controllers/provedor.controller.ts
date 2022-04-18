@@ -51,15 +51,7 @@ const getProvedorById = async (req: Request, res: Response) => {
 };
 const createProvedor = async (req: Request, res: Response) => {
   try {
-    const { nombre, direccion, telefono } = req.body;
-
-    const params = {
-      nombre,
-      direccion,
-      telefono,
-    };
-
-    const provedor = await Provedor.create(params);
+    const provedor = await Provedor.create(req.body);
 
     if (!provedor) {
       return res.status(204).send();
@@ -82,19 +74,14 @@ const createProvedor = async (req: Request, res: Response) => {
 const updateProvedor = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const { nombre, direccion, telefono } = req.body;
 
-    const params = {
-      nombre,
-      direccion,
-      telefono,
-    };
+    const provedor = await Provedor.findOne({ where: { id } });
 
-    const provedor = await Provedor.update(params, { where: { id } });
-
-    if (!provedor.length) {
+    if (!provedor) {
       return res.status(204).send();
     }
+
+    await provedor.update(req.body);
 
     return res.status(200).send({
       mensaje: "Provedor actualizado",
@@ -114,11 +101,13 @@ const deleteProvedor = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const provedor = await Provedor.destroy({ where: { id } });
+    const provedor = await Provedor.findOne({ where: { id } });
 
     if (!provedor) {
       return res.status(204).send();
     }
+
+    await provedor.destroy();
 
     return res.status(200).send({
       mensaje: "Provedor eliminado",
