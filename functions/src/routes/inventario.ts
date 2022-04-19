@@ -4,6 +4,7 @@ import * as inventarioController from "../controllers/inventario.controller";
 
 
 inventarioRouter.get('/getInventario/:id',inventarioController.getInventario);
+inventarioRouter.get('/getAllInventario',inventarioController.getAllInventario);
 inventarioRouter.get('/getInventarioById/:id',inventarioController.getInventarioById);
 inventarioRouter.post('/createInventario',inventarioController.createInvetario);
 inventarioRouter.put('/updateInventario/:id',inventarioController.updateInventario);

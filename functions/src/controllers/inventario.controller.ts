@@ -77,6 +77,29 @@ const getInventario = async (req: Request, res: Response) => {
     throw error;
   }
 };
+const getAllInventario = async (req: Request, res: Response) => {
+  try {
+    const invetario = await Inventario.findAll({
+      include: invetarioInclude,
+      order: [["updatedAt", "DESC"]],
+    });
+
+    if (!invetario.length) {
+      return res.status(200).send();
+    }
+
+    return res.status(200).send({
+      mensaje: "Inventario obtenido",
+      invetario,
+    });
+  } catch (error) {
+    res.status(400).send({
+      mensaje: "Ha ocurrido un error",
+      error}
+    );
+   throw error;
+    }
+}
 const createInvetario = async (req: Request, res: Response) => {
   try {
 
@@ -183,4 +206,5 @@ export {
   getInventarioById,
   updateInventario,
   eliminarInventario,
+  getAllInventario
 };
