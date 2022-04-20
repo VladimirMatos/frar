@@ -12,7 +12,7 @@ const router: Router = Router()
  import facturaRouter from './routes/facturas';
 import cartRouter from './routes/cart';
 import categoriaRouter from './routes/categoria';
-
+import link from './routes/link';
 // Routes
 router.use('/categoria', categoriaRouter)
 router.use('/cart',cartRouter)
@@ -25,7 +25,7 @@ router.use('/auth',authRouter)
 router.use('/producto',productosRouter)
 router.use('/invetario',inventarioRouter)
 router.use('/cliente',clienteRouter)
-
+router.use('/link',link)
 
 
 export default router;

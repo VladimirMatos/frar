@@ -7,7 +7,7 @@ userRouter.post('/createUsers',userCtrl.createUsuarios);
 userRouter.put('/updateUsers/:id',userCtrl.updateUsuarios);
 userRouter.get('/getUsersById/:id',userCtrl.getUsuariosById);
 userRouter.delete('/deleteUser/:id', userCtrl.deleteUsuario);
-
+userRouter.get('/getUsersByFilter/:filter',userCtrl.getUsuariosByFilter);
 
 
 export default userRouter;

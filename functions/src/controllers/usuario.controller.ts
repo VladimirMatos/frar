@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
+import {Op} from "sequelize";
 import { Usuario } from "../models/usuario";
 import { Role } from "../models/role";
 
@@ -166,12 +167,55 @@ const deleteUsuario = async (req: Request, res: Response) => {
     throw error;
   }
 };
+const getUsuariosByFilter = async (req: Request, res: Response) => {
+  try {
+    const {filter} = req.params;
+    const users = await Usuario.findAll({
+      where: {
+        role_id: 1,
+        [Op.or]: [
+          {
+            nombre: {
+              [Op.like]: `%${filter}%`,
+            },
+          },
+          {
+            apellido: {
+              [Op.like]: `%${filter}%`,
+            },
+          },
+          {
+            num_identificacion:{
+              [Op.like]: `%${filter}%`,
+            }
+          }
+        ]}
+    });
 
+    if (!users.length) {
+      return res.status(404).send();
+    }
+
+    return res.status(200).send({
+      mensaje: "Usuario encontrado",
+      users,
+    });
+
+  } catch (error) {
+    res.status(400).send({
+      mensaje: "Ha ocurrido un error",
+      error}
+    );
+    throw error;
+  }
+
+}
 
 export {
   getUsuarios,
   createUsuarios,
   updateUsuarios,
   getUsuariosById,
-  deleteUsuario
+  deleteUsuario,
+  getUsuariosByFilter
 };
