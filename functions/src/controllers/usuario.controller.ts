@@ -1,11 +1,21 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { Usuario } from "../models/usuario";
+import { Role } from "../models/role";
 
 const getUsuarios = async (req: Request, res: Response) => {
   try {
     const user = await Usuario.findAll({
+      where:{
+        role_id: 1
+      },
       order: [["updated_at", "DESC"]],
+      include: [
+        {
+          model: Role,
+          as: "Role",
+        }
+      ]
     });
     if (!user.length) {
       return res.status(204).send({
@@ -37,11 +47,11 @@ const createUsuarios = async (req: Request, res: Response) => {
       fecha_nacimiento,
       telefono,
       email,
-      contraseña,
+      contrasena,
       direccion_detalle,
       num_identificacion,
     } = req.body;
-    const passwordHash = await bcrypt.hash(contraseña, 8);
+    const passwordHash = await bcrypt.hash(contrasena, 8);
     const params = {
       nombre,
       apellido,
@@ -105,7 +115,12 @@ const getUsuariosById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const users = await Usuario.findOne({ where: { id } });
+    const users = await Usuario.findOne({ where: { id, role_id: 1 }, include: [
+      {
+        model: Role,
+        as: "Role",
+      }
+    ] });
 
     if (!users) {
       return res.status(204).send();

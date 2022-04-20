@@ -9,7 +9,7 @@ export interface UserAttr extends Model {
   fecha_nacimiento: string;
   telefono: string;
   correo: string;
-  contraseña: string;
+  contrasena: string;
   direccion_detalle: string;
   num_carnet: string;
   num_identificacion: string;

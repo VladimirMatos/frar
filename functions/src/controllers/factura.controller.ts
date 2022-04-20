@@ -10,6 +10,9 @@ import { Usuario } from "../models/usuario";
 const getFacturas = async (req: Request, res: Response) => {
   try {
     const factura = await FacturaDetalle.findAll({
+      where:{
+        cliente_id:req.params.id
+      },
       include: [
         {
           model: Usuario,
@@ -104,17 +107,16 @@ const createFactura = async (req: Request, res: Response) => {
           producto:inventario.Inventario.Productos.nombre,
           cliente_id: cliente_id,
         });
-
+        await FacturaDetalle.update(
+          { factura_id: factura.id },
+          { where: { id: facturaDetalle.id } }
+        );
         return facturaDetalle;
       })
     );
 
     const factura = await Factura.create({ total, condiciones });
 
-    await FacturaDetalle.update(
-      { factura_id: factura.id },
-      { where: { cliente_id } }
-    );
 
     
     const detalle = await FacturaDetalle.findAll({ where: { cliente_id }, include: [{ model: Usuario, as: "Cliente" }] });

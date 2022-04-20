@@ -5,7 +5,7 @@ import { Usuario } from '../models/usuario';
 
 const login = async (req: Request, res: Response) => {
     try{
-        const { email, contraseña } = req.body;
+        const { email, contrasena } = req.body;
         const user = await Usuario.findOne({
             where: { email }
         })
@@ -29,7 +29,7 @@ const login = async (req: Request, res: Response) => {
          * Password verification
          */
 
-            const passwordMatch = await bcrypt.compare(contraseña,user.contraseña);
+            const passwordMatch = await bcrypt.compare(contrasena,user.contrasena);
             
             if(!passwordMatch){
                 return res.status(400).send({

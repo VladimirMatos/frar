@@ -18,7 +18,7 @@ const Usuario = db.define<UserAttr>(
     apellido: DataTypes.STRING(100),
     fecha_nacimiento: DataTypes.STRING(100),
     telefono: DataTypes.STRING(100),
-    contraseña: DataTypes.STRING(100),
+    contrasena: DataTypes.STRING(100),
     direccion_detalle: DataTypes.STRING(100),
     num_carnet: DataTypes.STRING(100),
     num_identificacion: DataTypes.STRING(100),
@@ -27,6 +27,7 @@ const Usuario = db.define<UserAttr>(
       validate: {
         isEmail: true,
       },
+      
     },
     role_id: {
       type: DataTypes.INTEGER,
