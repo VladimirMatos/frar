@@ -14,4 +14,5 @@ export interface UserAttr extends Model {
   num_carnet: string;
   num_identificacion: string;
   role_id: number;
+  rnc: number;
 }

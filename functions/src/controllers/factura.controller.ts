@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Sequelize } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { Cart } from "../models/cart";
 import { Factura } from "../models/factura";
 import { FacturaDetalle } from "../models/factura-detalle";
@@ -10,9 +10,6 @@ import { Usuario } from "../models/usuario";
 const getFacturas = async (req: Request, res: Response) => {
   try {
     const factura = await FacturaDetalle.findAll({
-      where:{
-        cliente_id:req.params.id
-      },
       include: [
         {
           model: Usuario,
@@ -61,6 +58,7 @@ const createFactura = async (req: Request, res: Response) => {
     });
 
     let total = 0;
+    const arrayObjeto: any[] = []
     await Promise.all(
       inventario.map(async (inventario: any) => {
         const checkStock2 = inventario.Inventario.stock < inventario.cantidad;
@@ -94,49 +92,58 @@ const createFactura = async (req: Request, res: Response) => {
           );
         }
 
-        const sub_total =
-          inventario.Inventario.precio_libra * inventario.libras;
+        const sub_total = inventario.Inventario.precio_libra * inventario.libras;
         total = total + sub_total;
-
         
 
-        const facturaDetalle = await FacturaDetalle.create({
+        arrayObjeto.push({
           libras: inventario.libras,
           precio_libras: inventario.Inventario.precio_libra,
           cantidad: inventario.cantidad,
-          producto:inventario.Inventario.Productos.nombre,
-          cliente_id: cliente_id,
-        });
-        await FacturaDetalle.update(
-          { factura_id: factura.id },
-          { where: { id: facturaDetalle.id } }
-        );
-        return facturaDetalle;
+          producto: inventario.Inventario.Productos.nombre,
+          cliente_id});
+
+
+        return 
       })
     );
+    
+    
+   const facturaDetalle = await FacturaDetalle.bulkCreate(arrayObjeto);    
 
     const factura = await Factura.create({ total, condiciones });
-
-
     
-    const detalle = await FacturaDetalle.findAll({ where: { cliente_id }, include: [{ model: Usuario, as: "Cliente" }] });
+    facturaDetalle.forEach(async (facturaDetalle: any) => {
+
+      await FacturaDetalle.update(
+        { factura_id: factura.id },
+        { where: { id: facturaDetalle.id } }
+      );
+    })
+    
+    const detalle = await FacturaDetalle.findAll({ where: { cliente_id, id:{
+      [Op.in]: facturaDetalle.map((facturaDetalle: any) => facturaDetalle.id)
+    } }, include: [{ model: Usuario, as: "Cliente" }] });
 
     const FacturaDetallada = {
       detalle,
       total: factura.total,
       condiciones,
     };
-
+    
     if (!FacturaDetallada) {
       return res.status(204).send();
     }
+
     await Cart.destroy({
       where: { cliente_id },
     });
+
     return res.status(200).send({
       mensaje: "Factura creada",
       FacturaDetallada,
     });
+
   } catch (error) {
     res.status(400).send({
       mensaje: "Ha ocurrido un error",

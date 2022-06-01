@@ -35,7 +35,11 @@ const FacturaDetalle = db.define<FacturaDetalleAttr>('FacturaDetalle',{
     factura_id: {
         type: DataTypes.INTEGER,
         allowNull: true
-    }
+    },
+	tax: {
+		type: DataTypes.INTEGER,
+		allowNull: false
+	}
 })
 
 FacturaDetalle.belongsTo(Usuario,{foreignKey:'cliente_id',as:'Cliente'});

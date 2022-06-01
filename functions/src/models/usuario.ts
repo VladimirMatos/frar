@@ -33,6 +33,10 @@ const Usuario = db.define<UserAttr>(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    rnc:{
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    }
   },
   { createdAt: 'created_at', updatedAt: 'updated_at' }
 );

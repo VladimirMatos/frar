@@ -7,4 +7,5 @@ export interface FacturaDetalleAttr extends Model{
     cantidad: number;
     producto: string; 
     factura_id: number;
+    tax: number;
 }
